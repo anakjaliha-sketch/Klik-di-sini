@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<title>Mini Love Game 🤍</title>
+<style>
+  body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-top: 50px;
+    background-color: #ffe6f2;
+  }
+  .slide { display: none; }
+  .active { display: block; }
+  input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid #ff4da6;
+  }
+  button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+  }
+  .yes { background-color: #ff4da6; color: white; }
+  .no { background-color: white; border: 2px solid #ff4da6; color: #ff4da6; }
+  a { text-decoration:none; color:#ff4da6; font-weight:bold;}
+</style>
+</head>
+<body>
+
+<!-- Slide 1 -->
+<div class="slide active" id="slide1">
+  <h2>Sila taip nama anda</h2>
+  <input type="text" id="nameInput" placeholder="Taip nama sini">
+  <br><br>
+  <button onclick="checkName()">Hantar</button>
+  <p id="clue" style="color:red;"></p>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide" id="slide2">
+  <h2>Kau sayang aku lagi ke?</h2>
+  <button class="yes" id="yesBtn">YES</button>
+  <button class="no" onclick="nextSlide(3)">NO</button>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide" id="slide3">
+  <h2>Betul ke tak sayang dah?</h2>
+  <button class="yes" onclick="nextSlide(4)">YES</button>
+  <button class="no" disabled>NO</button>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide" id="slide4">
+  <h2>Oh tkpela, tapi aku masih je sayang kau lagi</h2>
+  <button onclick="nextSlide(5)">OK</button>
+</div>
+
+<!-- Slide 5 -->
+<div class="slide" id="slide5">
+  <h2>Bila kau free?</h2>
+  <button onclick="checkDate('27/02/2026')">27/02/2026</button>
+  <button onclick="endGame()">Tak free</button>
+</div>
+
+<!-- Slide 6 -->
+<div class="slide" id="slide6">
+  <h2>Nak keluar dengan aku tak?</h2>
+  <button onclick="nextSlide(7)">YES</button>
+</div>
+
+<!-- Slide 7 -->
+<div class="slide" id="slide7">
+  <h2>Kau ada plan gi mana mana ke?</h2>
+  <input type="text" id="planInput" placeholder="Taip jawapan sini">
+  <br><br>
+  <button onclick="checkPlan()">Hantar</button>
+  <p id="planClue" style="color:red;"></p>
+</div>
+
+<!-- Slide 8 -->
+<div class="slide" id="slide8">
+  <h2>Yeayyy manaa kau tahu aku nak ke situ, okeylaaa jumpa kat sna nntii, byebye sayangg kau 😘</h2>
+</div>
+
+<script>
+let nameTries = 0;
+
+// Function to move YES button randomly
+function moveButtonRandom(btn) {
+  btn.style.position = "absolute";
+  btn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+  btn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+}
+
+// Check Slide 1 (Name)
+function checkName() {
+  const nameInput = document.getElementById("nameInput").value.trim().toLowerCase();
+  const clue = document.getElementById("clue");
+  if(nameInput === "fit") {
+    nextSlide(2);
+  } else {
+    nameTries++;
+    if(nameTries >= 2){
+      clue.innerText = "Clue: Taip nama fav aku panggil kau 😏";
+    } else {
+      clue.innerText = "Nama salah, cuba lagi 😢";
+    }
+  }
+}
+
+// Check Slide 5 (Date)
+function checkDate(value){
+  if(value === "27/02/2026"){
+    nextSlide(6);
+  } else {
+    endGame();
+  }
+}
+
+// Check Slide 7 (Plan)
+function checkPlan(){
+  const planInput = document.getElementById("planInput").value.trim().toLowerCase();
+  const clue = document.getElementById("planClue");
+  if(planInput === "malam minggu"){
+    nextSlide(8);
+  } else {
+    clue.innerText = "Salah jawapan 😢 cuba lagi!";
+  }
+}
+
+// Next slide
+function nextSlide(n){
+  const slides = document.getElementsByClassName("slide");
+  for(let i=0;i<slides.length;i++){
+    slides[i].classList.remove("active");
+  }
+  document.getElementById("slide"+n).classList.add("active");
+}
+
+// End game
+function endGame(){
+  document.body.innerHTML = "<h2>Game tamat 😢</h2>";
+}
+
+// Slide 2 YES button bergerak
+const yesBtn = document.getElementById("yesBtn");
+yesBtn.addEventListener("mouseover", function(){
+  moveButtonRandom(yesBtn);
+});
+
+</script>
+
+</body>
+</html>
